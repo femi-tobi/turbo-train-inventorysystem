@@ -30,6 +30,7 @@ class _ProductFormDialogState extends State<ProductFormDialog> {
   late final TextEditingController _wholePack;
   late final TextEditingController _retailPiece;
   late final TextEditingController _reorder;
+  late final TextEditingController _stockPacks;
 
   int? _supplierId;
   bool _saving = false;
@@ -55,6 +56,8 @@ class _ProductFormDialogState extends State<ProductFormDialog> {
         text: p != null ? p.retailPricePerPiece.toString() : '');
     _reorder = TextEditingController(
         text: p != null ? '${p.reorderLevel}' : '');
+    _stockPacks = TextEditingController(
+        text: p != null ? '${p.stockPacks}' : '0');
     _supplierId = p?.supplierId;
   }
 
@@ -62,7 +65,7 @@ class _ProductFormDialogState extends State<ProductFormDialog> {
   void dispose() {
     for (final c in [
       _code, _name, _brand, _category, _barcode,
-      _upp, _costPack, _wholePack, _retailPiece, _reorder
+      _upp, _costPack, _wholePack, _retailPiece, _reorder, _stockPacks
     ]) {
       c.dispose();
     }
@@ -97,7 +100,7 @@ class _ProductFormDialogState extends State<ProductFormDialog> {
       wholesalePricePerPack: double.parse(_wholePack.text),
       retailPricePerPiece: double.parse(_retailPiece.text),
       reorderLevel: int.parse(_reorder.text),
-      stockPacks: widget.product?.stockPacks ?? 0,
+      stockPacks: double.tryParse(_stockPacks.text) ?? widget.product?.stockPacks ?? 0.0,
       avgCostPerPack: widget.product?.avgCostPerPack ?? double.parse(_costPack.text),
       createdAt: widget.product?.createdAt ?? DateTime.now(),
     );
@@ -292,6 +295,16 @@ class _ProductFormDialogState extends State<ProductFormDialog> {
                               validator: _nonNegInt,
                             ),
                           ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: AppTextField(
+                              controller: _stockPacks,
+                              label: 'Stock (Packs)',
+                              hint: 'e.g. 10',
+                              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                              validator: _nonNegNum,
+                            ),
+                          ),
                         ],
                       ),
                     ],
@@ -384,6 +397,13 @@ class _ProductFormDialogState extends State<ProductFormDialog> {
   String? _nonNegInt(String? v) {
     if (v == null || v.isEmpty) return 'Required';
     final n = int.tryParse(v);
+    if (n == null || n < 0) return 'Enter 0 or greater';
+    return null;
+  }
+
+  String? _nonNegNum(String? v) {
+    if (v == null || v.isEmpty) return 'Required';
+    final n = double.tryParse(v);
     if (n == null || n < 0) return 'Enter 0 or greater';
     return null;
   }
