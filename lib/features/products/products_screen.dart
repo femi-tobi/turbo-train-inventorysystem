@@ -6,6 +6,7 @@ import '../../core/providers/product_provider.dart';
 import '../../shared/theme/app_theme.dart';
 import '../../shared/utils/formatters.dart';
 import '../../shared/widgets/page_header.dart';
+import 'import_products_dialog.dart';
 import 'product_form_dialog.dart';
 
 class ProductsScreen extends StatefulWidget {
@@ -40,6 +41,13 @@ class _ProductsScreenState extends State<ProductsScreen> {
           title: 'Products',
           subtitle: '${all.length} products across ${brands.length - 1} brands',
           actions: [
+            HeaderButton(
+              label: 'Import from Excel',
+              icon: Icons.upload_file,
+              isPrimary: false,
+              onPressed: () => _showImport(context),
+            ),
+            const SizedBox(width: 8),
             HeaderButton(
               label: 'Add Product',
               icon: Icons.add,
@@ -261,6 +269,14 @@ class _ProductsScreenState extends State<ProductsScreen> {
           ],
         ),
       );
+
+  void _showImport(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const ImportProductsDialog(),
+    );
+  }
 
   void _showForm(BuildContext context, {ProductModel? product}) {
     showDialog(
