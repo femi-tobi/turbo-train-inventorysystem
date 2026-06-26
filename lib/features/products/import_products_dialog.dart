@@ -5,6 +5,7 @@ import 'package:excel/excel.dart' as xl;
 import '../../core/models/product_model.dart';
 import '../../core/providers/product_provider.dart';
 import '../../core/providers/supplier_provider.dart';
+import '../../core/models/supplier_model.dart';
 import '../../core/providers/dashboard_provider.dart';
 import '../../shared/theme/app_theme.dart';
 import '../../shared/widgets/app_text_field.dart';
@@ -94,6 +95,7 @@ class _ImportProductsDialogState extends State<ImportProductsDialog> {
   List<_ImportRow> _rows = [];
   bool _importing = false;
   int _importedCount = 0;
+  final _scrollController = ScrollController();
 
   // Global defaults applied to all rows at once
   final _globalBrand = TextEditingController();
@@ -113,6 +115,7 @@ class _ImportProductsDialogState extends State<ImportProductsDialog> {
     _globalBrand.dispose();
     _globalCategory.dispose();
     _globalUpp.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -360,7 +363,9 @@ class _ImportProductsDialogState extends State<ImportProductsDialog> {
               // ── Rows ──
               Expanded(
                 child: Scrollbar(
+                  controller: _scrollController,
                   child: ListView.separated(
+                    controller: _scrollController,
                     itemCount: _rows.length,
                     separatorBuilder: (_, __) =>
                         const Divider(height: 1, color: AppColors.border),
@@ -409,7 +414,7 @@ class _ImportProductsDialogState extends State<ImportProductsDialog> {
     );
   }
 
-  Widget _buildRow(_ImportRow r, suppliers, int index) {
+  Widget _buildRow(_ImportRow r, List<SupplierModel> suppliers, int index) {
     final bg = index.isEven ? AppColors.card : AppColors.cardHover;
     return Container(
       color: r.selected ? bg : AppColors.surface.withOpacity(0.5),
