@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/models/product_model.dart';
 import '../../core/providers/product_provider.dart';
@@ -46,7 +46,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
           actions: [
             IconButton(
               onPressed: () => prov.loadProducts(),
-              icon: const Icon(Icons.refresh_rounded,
+              icon: Icon(Icons.refresh_rounded,
                   color: AppColors.textSecondary),
               tooltip: 'Refresh',
             ),
@@ -59,31 +59,31 @@ class _InventoryScreenState extends State<InventoryScreen> {
           child: Row(
             children: [
               _chip('All', all.length, Colors.transparent, AppColors.textSecondary),
-              const SizedBox(width: 8),
+              SizedBox(width: 8),
               _chip('Low Stock', lowCount, AppColors.warningBg, AppColors.warning),
-              const SizedBox(width: 8),
+              SizedBox(width: 8),
               _chip('Out of Stock', outCount, AppColors.errorBg, AppColors.error),
-              const SizedBox(width: 16),
+              SizedBox(width: 16),
               Expanded(
                 child: TextField(
                   onChanged: (v) => setState(() => _search = v),
-                  style: const TextStyle(
+                  style: TextStyle(
                       color: AppColors.textPrimary, fontSize: 13),
                   decoration: InputDecoration(
                     hintText: 'Search products…',
                     prefixIcon:
-                        const Icon(Icons.search, color: AppColors.textMuted, size: 18),
+                        Icon(Icons.search, color: AppColors.textMuted, size: 18),
                     filled: true,
                     fillColor: AppColors.surface,
                     contentPadding: const EdgeInsets.symmetric(
                         vertical: 10, horizontal: 14),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: AppColors.border),
+                      borderSide: BorderSide(color: AppColors.border),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: AppColors.border),
+                      borderSide: BorderSide(color: AppColors.border),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -104,7 +104,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
               ? const Center(
                   child: CircularProgressIndicator(color: AppColors.accent))
               : filtered.isEmpty
-                  ? const Center(
+                  ? Center(
                       child: Text('No products match your filter',
                           style: TextStyle(color: AppColors.textMuted)))
                   : Scrollbar(
@@ -114,7 +114,8 @@ class _InventoryScreenState extends State<InventoryScreen> {
                           decoration: BoxDecoration(
                             color: AppColors.card,
                             borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: AppColors.border),
+                            border: AppColors.isDark ? Border.all(color: AppColors.border) : null,
+                            boxShadow: AppColors.cardShadow,
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(12),
@@ -167,7 +168,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
       );
 
   TableRow _header() => TableRow(
-        decoration: const BoxDecoration(color: AppColors.surface),
+        decoration: BoxDecoration(color: AppColors.surface),
         children: [
           'Product / Brand',
           'Category',
@@ -181,7 +182,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 14, vertical: 12),
                   child: Text(c,
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: AppColors.textSecondary,
                           fontSize: 11,
                           fontWeight: FontWeight.w600,
@@ -221,12 +222,12 @@ class _InventoryScreenState extends State<InventoryScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(p.name,
-                  style: const TextStyle(
+                  style: TextStyle(
                       color: AppColors.textPrimary,
                       fontSize: 13,
                       fontWeight: FontWeight.w600)),
               Text(p.brand,
-                  style: const TextStyle(
+                  style: TextStyle(
                       color: AppColors.textSecondary, fontSize: 11)),
             ],
           ),

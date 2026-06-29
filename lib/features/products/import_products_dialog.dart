@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:excel/excel.dart' as xl;
@@ -234,13 +234,13 @@ class _ImportProductsDialogState extends State<ImportProductsDialog> {
             // ── Header ──
             Container(
               padding: const EdgeInsets.fromLTRB(24, 18, 16, 18),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                   border: Border(bottom: BorderSide(color: AppColors.border))),
               child: Row(
                 children: [
                   const Icon(Icons.upload_file, color: AppColors.accent, size: 20),
                   const SizedBox(width: 10),
-                  const Expanded(
+                  Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -269,7 +269,7 @@ class _ImportProductsDialogState extends State<ImportProductsDialog> {
               Expanded(
                 child: Center(
                   child: Text(_error!,
-                      style: const TextStyle(color: AppColors.error)),
+                      style: TextStyle(color: AppColors.error)),
                 ),
               )
             else ...[
@@ -280,7 +280,7 @@ class _ImportProductsDialogState extends State<ImportProductsDialog> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Apply to all rows:',
+                    Text('Apply to all rows:',
                         style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.w600,
@@ -358,7 +358,7 @@ class _ImportProductsDialogState extends State<ImportProductsDialog> {
                   ],
                 ),
               ),
-              const Divider(height: 1, color: AppColors.border),
+              Divider(height: 1, color: AppColors.border),
 
               // ── Rows ──
               Expanded(
@@ -368,7 +368,7 @@ class _ImportProductsDialogState extends State<ImportProductsDialog> {
                     controller: _scrollController,
                     itemCount: _rows.length,
                     separatorBuilder: (_, __) =>
-                        const Divider(height: 1, color: AppColors.border),
+                        Divider(height: 1, color: AppColors.border),
                     itemBuilder: (ctx, i) =>
                         _buildRow(_rows[i], suppliers, i),
                   ),
@@ -379,12 +379,12 @@ class _ImportProductsDialogState extends State<ImportProductsDialog> {
             // ── Footer ──
             Container(
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                   border: Border(top: BorderSide(color: AppColors.border))),
               child: Row(
                 children: [
                   Text('${_rows.length} rows  •  $selectedCount selected',
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: AppColors.textMuted, fontSize: 13)),
                   const Spacer(),
                   OutlinedButton(
@@ -453,12 +453,12 @@ class _ImportProductsDialogState extends State<ImportProductsDialog> {
                   ),
                   child: DropdownButton<int>(
                     value: r.supplierId,
-                    hint: const Text('Select',
+                    hint: Text('Select',
                         style: TextStyle(
                             fontSize: 12, color: AppColors.textMuted)),
                     dropdownColor: AppColors.card,
                     isExpanded: true,
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: AppColors.textPrimary, fontSize: 12),
                     items: suppliers
                         .map<DropdownMenuItem<int>>((s) => DropdownMenuItem(
@@ -484,7 +484,7 @@ class _ImportProductsDialogState extends State<ImportProductsDialog> {
   Widget _th(String label, double width) => SizedBox(
         width: width,
         child: Text(label,
-            style: const TextStyle(
+            style: TextStyle(
                 color: AppColors.textSecondary,
                 fontSize: 11,
                 fontWeight: FontWeight.w600)),
@@ -515,7 +515,7 @@ class _ImportProductsDialogState extends State<ImportProductsDialog> {
             child: TextField(
               controller: ctrl,
               onChanged: (_) => setState(() {}),
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.textPrimary, fontSize: 12),
               keyboardType: decimal
                   ? const TextInputType.numberWithOptions(decimal: true)
@@ -530,11 +530,11 @@ class _ImportProductsDialogState extends State<ImportProductsDialog> {
                 fillColor: AppColors.surface,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(6),
-                  borderSide: const BorderSide(color: AppColors.border),
+                  borderSide: BorderSide(color: AppColors.border),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(6),
-                  borderSide: const BorderSide(color: AppColors.border),
+                  borderSide: BorderSide(color: AppColors.border),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(6),
@@ -554,11 +554,11 @@ class _ImportProductsDialogState extends State<ImportProductsDialog> {
           controller: ctrl,
           keyboardType: numeric ? TextInputType.number : TextInputType.text,
           style:
-              const TextStyle(color: AppColors.textPrimary, fontSize: 13),
+              TextStyle(color: AppColors.textPrimary, fontSize: 13),
           decoration: InputDecoration(
             hintText: hint,
             hintStyle:
-                const TextStyle(color: AppColors.textMuted, fontSize: 12),
+                TextStyle(color: AppColors.textMuted, fontSize: 12),
             isDense: true,
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
@@ -566,11 +566,11 @@ class _ImportProductsDialogState extends State<ImportProductsDialog> {
             fillColor: AppColors.card,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: const BorderSide(color: AppColors.border),
+              borderSide: BorderSide(color: AppColors.border),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: const BorderSide(color: AppColors.border),
+              borderSide: BorderSide(color: AppColors.border),
             ),
           ),
         ),
@@ -587,18 +587,19 @@ class _ImportProductsDialogState extends State<ImportProductsDialog> {
           padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
             color: AppColors.card,
-            border: Border.all(color: AppColors.border),
+            border: AppColors.isDark ? Border.all(color: AppColors.border) : null,
+            boxShadow: AppColors.cardShadow,
             borderRadius: BorderRadius.circular(8),
           ),
           child: DropdownButton<int>(
             value: value,
             hint: Text(hint,
-                style: const TextStyle(
+                style: TextStyle(
                     color: AppColors.textMuted, fontSize: 12)),
             dropdownColor: AppColors.card,
             isExpanded: true,
             style:
-                const TextStyle(color: AppColors.textPrimary, fontSize: 13),
+                TextStyle(color: AppColors.textPrimary, fontSize: 13),
             items: suppliers
                 .map<DropdownMenuItem<int>>(
                     (s) => DropdownMenuItem(value: s.id, child: Text(s.name)))

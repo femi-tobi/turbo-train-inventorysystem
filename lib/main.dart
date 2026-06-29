@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'app_shell.dart';
+import 'core/providers/theme_provider.dart';
 import 'core/providers/auth_provider.dart';
 import 'core/providers/dashboard_provider.dart';
 import 'core/providers/product_provider.dart';
@@ -19,16 +20,13 @@ void main() async {
   sqfliteFfiInit();
   databaseFactory = databaseFactoryFfi;
 
-  runApp(const LagosStoreApp());
-}
+  final themeProvider = ThemeProvider();
+  await themeProvider.init();
 
-class LagosStoreApp extends StatelessWidget {
-  const LagosStoreApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
+  runApp(
+    MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(value: themeProvider),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => ProductProvider()),
         ChangeNotifierProvider(create: (_) => SupplierProvider()),
@@ -36,12 +34,22 @@ class LagosStoreApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => SaleProvider()),
         ChangeNotifierProvider(create: (_) => DashboardProvider()),
       ],
-      child: MaterialApp(
-        title: 'Lagos Store — Inventory',
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.dark,
-        home: const _RootRouter(),
-      ),
+      child: const LagosStoreApp(),
+    ),
+  );
+}
+
+class LagosStoreApp extends StatelessWidget {
+  const LagosStoreApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = context.watch<ThemeProvider>().isDark;
+    return MaterialApp(
+      title: 'Lagos Store — Inventory',
+      debugShowCheckedModeBanner: false,
+      theme: isDark ? AppTheme.dark : AppTheme.light,
+      home: const _RootRouter(),
     );
   }
 }

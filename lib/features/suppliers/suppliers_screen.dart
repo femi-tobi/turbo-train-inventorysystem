@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/models/supplier_model.dart';
 import '../../core/providers/supplier_provider.dart';
@@ -34,7 +34,7 @@ class SuppliersScreen extends StatelessWidget {
               ? const Center(
                   child: CircularProgressIndicator(color: AppColors.accent))
               : suppliers.isEmpty
-                  ? const Center(
+                  ? Center(
                       child: Text('No suppliers yet',
                           style: TextStyle(color: AppColors.textMuted)))
                   : Scrollbar(
@@ -44,7 +44,8 @@ class SuppliersScreen extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: AppColors.card,
                             borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: AppColors.border),
+                            border: AppColors.isDark ? Border.all(color: AppColors.border) : null,
+                            boxShadow: AppColors.cardShadow,
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(12),
@@ -72,13 +73,13 @@ class SuppliersScreen extends StatelessWidget {
   }
 
   TableRow _header() => TableRow(
-        decoration: const BoxDecoration(color: AppColors.surface),
+        decoration: BoxDecoration(color: AppColors.surface),
         children: ['#', 'Supplier Name', 'Phone', 'Joined', 'Actions']
             .map((c) => Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 16, vertical: 12),
                   child: Text(c,
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: AppColors.textSecondary,
                           fontSize: 11,
                           fontWeight: FontWeight.w600,

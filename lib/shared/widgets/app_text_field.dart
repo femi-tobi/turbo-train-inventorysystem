@@ -48,7 +48,7 @@ class AppTextField extends StatelessWidget {
       maxLines: maxLines,
       autofocus: autofocus,
       focusNode: focusNode,
-      style: const TextStyle(
+      style: TextStyle(
           color: AppColors.textPrimary, fontSize: 14, fontFamily: 'Inter'),
       decoration: InputDecoration(
         labelText: label,
@@ -84,10 +84,10 @@ class AppDropdown<T> extends StatelessWidget {
       onChanged: onChanged,
       validator: validator,
       dropdownColor: AppColors.card,
-      style: const TextStyle(
+      style: TextStyle(
           color: AppColors.textPrimary, fontSize: 14, fontFamily: 'Inter'),
       decoration: InputDecoration(labelText: label),
-      icon: const Icon(Icons.expand_more, color: AppColors.textSecondary),
+      icon: Icon(Icons.expand_more, color: AppColors.textSecondary),
     );
   }
 }

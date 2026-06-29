@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/models/purchase_model.dart';
 import '../../core/providers/product_provider.dart';
@@ -35,13 +35,17 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
       initialDate: DateTime.now(),
       firstDate: DateTime(2020),
       lastDate: DateTime(2099),
-      builder: (ctx, child) => Theme(
-        data: Theme.of(ctx).copyWith(
-          colorScheme:
-              const ColorScheme.dark(primary: AppColors.accent),
-        ),
-        child: child!,
-      ),
+      builder: (ctx, child) {
+        final isDark = Theme.of(ctx).brightness == Brightness.dark;
+        return Theme(
+          data: Theme.of(ctx).copyWith(
+            colorScheme: isDark
+                ? const ColorScheme.dark(primary: AppColors.accent)
+                : const ColorScheme.light(primary: AppColors.accent),
+          ),
+          child: child!,
+        );
+      },
     );
     if (dt != null) {
       setState(() {
@@ -95,8 +99,8 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
               if (_from != null || _to != null)
                 TextButton.icon(
                   onPressed: _clearFilters,
-                  icon: const Icon(Icons.clear, size: 14),
-                  label: const Text('Clear'),
+                  icon: Icon(Icons.clear, size: 14),
+                  label: Text('Clear'),
                   style: TextButton.styleFrom(
                       foregroundColor: AppColors.textSecondary),
                 ),
@@ -104,14 +108,14 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
           ),
         ),
 
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
 
         Expanded(
           child: prov.isLoading
               ? const Center(
                   child: CircularProgressIndicator(color: AppColors.accent))
               : prov.purchases.isEmpty
-                  ? const Center(
+                  ? Center(
                       child: Text('No purchases recorded',
                           style: TextStyle(color: AppColors.textMuted)))
                   : Scrollbar(
@@ -121,7 +125,8 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
                           decoration: BoxDecoration(
                             color: AppColors.card,
                             borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: AppColors.border),
+                            border: AppColors.isDark ? Border.all(color: AppColors.border) : null,
+                            boxShadow: AppColors.cardShadow,
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(12),
@@ -151,14 +156,14 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
   }
 
   TableRow _header() => TableRow(
-        decoration: const BoxDecoration(color: AppColors.surface),
+        decoration: BoxDecoration(color: AppColors.surface),
         children: ['Date', 'Supplier', 'Product', 'Packs', 'Cost/Pack',
                    'Total Cost', 'Invoice']
             .map((c) => Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 14, vertical: 12),
                   child: Text(c,
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: AppColors.textSecondary,
                           fontSize: 11,
                           fontWeight: FontWeight.w600,
@@ -276,11 +281,17 @@ class _PurchaseFormDialogState extends State<_PurchaseFormDialog> {
       initialDate: _date,
       firstDate: DateTime(2020),
       lastDate: DateTime.now(),
-      builder: (ctx, child) => Theme(
-        data: Theme.of(ctx).copyWith(
-            colorScheme: const ColorScheme.dark(primary: AppColors.accent)),
-        child: child!,
-      ),
+      builder: (ctx, child) {
+        final isDark = Theme.of(ctx).brightness == Brightness.dark;
+        return Theme(
+          data: Theme.of(ctx).copyWith(
+            colorScheme: isDark
+                ? const ColorScheme.dark(primary: AppColors.accent)
+                : const ColorScheme.light(primary: AppColors.accent),
+          ),
+          child: child!,
+        );
+      },
     );
     if (dt != null) setState(() => _date = dt);
   }
@@ -450,7 +461,7 @@ class _PurchaseFormDialogState extends State<_PurchaseFormDialog> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('Total Cost',
+                          Text('Total Cost',
                               style: TextStyle(
                                   color: AppColors.textSecondary,
                                   fontSize: 13)),
@@ -483,7 +494,7 @@ class _PurchaseFormDialogState extends State<_PurchaseFormDialog> {
 
 Widget _dialogHeader(BuildContext context, String title) => Container(
       padding: const EdgeInsets.fromLTRB(24, 18, 16, 18),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
           border: Border(bottom: BorderSide(color: AppColors.border))),
       child: Row(
         children: [
@@ -502,7 +513,7 @@ Widget _dialogFooter(BuildContext context, bool saving, VoidCallback onSave,
     String label) =>
     Container(
       padding: const EdgeInsets.fromLTRB(24, 14, 24, 14),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
           border: Border(top: BorderSide(color: AppColors.border))),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,

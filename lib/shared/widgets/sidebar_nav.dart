@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../theme/app_theme.dart';
 import '../../core/providers/auth_provider.dart';
+import '../../core/providers/theme_provider.dart';
 import '../../core/models/user_model.dart';
 
 class SidebarNav extends StatelessWidget {
@@ -22,13 +23,16 @@ class SidebarNav extends StatelessWidget {
 
     return Container(
       width: 240,
-      color: AppColors.sidebarBg,
+      decoration: BoxDecoration(
+        color: AppColors.sidebarBg,
+        boxShadow: AppColors.sidebarShadow,
+      ),
       child: Column(
         children: [
           // Logo / App name
           Container(
             padding: const EdgeInsets.fromLTRB(20, 28, 20, 24),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               border: Border(
                   bottom: BorderSide(color: AppColors.border, width: 1)),
             ),
@@ -49,7 +53,7 @@ class SidebarNav extends StatelessWidget {
                       color: Colors.black, size: 20),
                 ),
                 const SizedBox(width: 12),
-                const Expanded(
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -70,24 +74,88 @@ class SidebarNav extends StatelessWidget {
 
           // Nav items
           Expanded(
-            child: ListView(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
-              children: items.map((item) {
-                final idx = items.indexOf(item);
-                final isSelected = selectedIndex == idx;
-                return _NavTile(
-                  item: item,
-                  isSelected: isSelected,
-                  onTap: () => onItemSelected(idx),
+            child: Column(
+              children: [
+                Expanded(
+                  child: ListView(
+                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                    children: items.map((item) {
+                      final idx = items.indexOf(item);
+                      final isSelected = selectedIndex == idx;
+                      return _NavTile(
+                        item: item,
+                        isSelected: isSelected,
+                        onTap: () => onItemSelected(idx),
+                      );
+                    }).toList(),
+                  ),
+                ),
+                // Theme Toggle
+                Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+            child: Consumer<ThemeProvider>(
+              builder: (context, themeProvider, child) {
+                return MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: GestureDetector(
+                    onTap: () => themeProvider.toggleTheme(),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                      decoration: BoxDecoration(
+                        color: AppColors.sidebarHover,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: AppColors.border),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            themeProvider.isDark
+                                ? Icons.light_mode_rounded
+                                : Icons.dark_mode_rounded,
+                            size: 18,
+                            color: AppColors.accent,
+                          ),
+                          SizedBox(width: 12),
+                          Text(
+                            themeProvider.isDark ? 'Light Mode' : 'Dark Mode',
+                            style: TextStyle(
+                              color: AppColors.textPrimary,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const Spacer(),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: AppColors.accent.withOpacity(0.15),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              themeProvider.isDark ? 'DARK' : 'LIGHT',
+                              style: TextStyle(
+                                color: AppColors.accent,
+                                fontSize: 9,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 );
-              }).toList(),
+              },
+            ),
+                ),
+              ],
             ),
           ),
 
           // User info + logout
           Container(
             padding: const EdgeInsets.all(14),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               border:
                   Border(top: BorderSide(color: AppColors.border, width: 1)),
             ),
@@ -104,19 +172,19 @@ class SidebarNav extends StatelessWidget {
                         fontSize: 14),
                   ),
                 ),
-                const SizedBox(width: 10),
+                SizedBox(width: 10),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(user.username,
-                          style: const TextStyle(
+                          style: TextStyle(
                               color: AppColors.textPrimary,
                               fontSize: 13,
                               fontWeight: FontWeight.w600),
                           overflow: TextOverflow.ellipsis),
                       Text(user.role.toUpperCase(),
-                          style: const TextStyle(
+                          style: TextStyle(
                               color: AppColors.textMuted, fontSize: 10)),
                     ],
                   ),
@@ -124,7 +192,7 @@ class SidebarNav extends StatelessWidget {
                 IconButton(
                   onPressed: () =>
                       context.read<AuthProvider>().logout(),
-                  icon: const Icon(Icons.logout_rounded,
+                  icon: Icon(Icons.logout_rounded,
                       size: 18, color: AppColors.textSecondary),
                   tooltip: 'Logout',
                   padding: EdgeInsets.zero,

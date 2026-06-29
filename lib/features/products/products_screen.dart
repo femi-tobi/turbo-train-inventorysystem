@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/models/product_model.dart';
 import '../../core/providers/dashboard_provider.dart';
@@ -66,23 +66,23 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 flex: 3,
                 child: TextField(
                   onChanged: (v) => setState(() => _search = v),
-                  style: const TextStyle(
+                  style: TextStyle(
                       color: AppColors.textPrimary, fontSize: 14),
                   decoration: InputDecoration(
                     hintText: 'Search by name, code or brand…',
                     prefixIcon:
-                        const Icon(Icons.search, color: AppColors.textMuted),
+                        Icon(Icons.search, color: AppColors.textMuted),
                     filled: true,
                     fillColor: AppColors.surface,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide:
-                          const BorderSide(color: AppColors.border),
+                          BorderSide(color: AppColors.border),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide:
-                          const BorderSide(color: AppColors.border),
+                          BorderSide(color: AppColors.border),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -93,7 +93,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               DropdownButtonHideUnderline(
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 14),
@@ -105,7 +105,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   child: DropdownButton<String>(
                     value: _filterBrand,
                     dropdownColor: AppColors.card,
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: AppColors.textPrimary, fontSize: 14),
                     items: brands
                         .map((b) => DropdownMenuItem(value: b, child: Text(b)))
@@ -140,10 +140,11 @@ class _ProductsScreenState extends State<ProductsScreen> {
         padding: const EdgeInsets.fromLTRB(28, 0, 28, 28),
         child: Container(
           decoration: BoxDecoration(
-            color: AppColors.card,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.border),
-          ),
+                            color: AppColors.card,
+                            borderRadius: BorderRadius.circular(12),
+                            border: AppColors.isDark ? Border.all(color: AppColors.border) : null,
+                            boxShadow: AppColors.cardShadow,
+                          ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Table(
@@ -174,13 +175,13 @@ class _ProductsScreenState extends State<ProductsScreen> {
 
   TableRow _headerRow(List<String> cols) {
     return TableRow(
-      decoration: const BoxDecoration(color: AppColors.surface),
+      decoration: BoxDecoration(color: AppColors.surface),
       children: cols
           .map((c) => Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 14, vertical: 12),
                 child: Text(c,
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: AppColors.textSecondary,
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
@@ -257,7 +258,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
         ),
       );
 
-  Widget _empty() => const Center(
+  Widget _empty() => Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

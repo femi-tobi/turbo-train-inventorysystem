@@ -17,10 +17,20 @@ class PageHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(28, 24, 28, 20),
-      decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: AppColors.border, width: 1),
-        ),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        border: AppColors.isDark
+            ? Border(bottom: BorderSide(color: AppColors.border, width: 1))
+            : null,
+        boxShadow: AppColors.isDark
+            ? const []
+            : const [
+                BoxShadow(
+                  color: Color(0x0A64748B),
+                  blurRadius: 8,
+                  offset: Offset(0, 2),
+                ),
+              ],
       ),
       child: Row(
         children: [
@@ -29,16 +39,16 @@ class PageHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: AppColors.textPrimary,
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                       letterSpacing: -0.3,
                     )),
                 if (subtitle != null) ...[
-                  const SizedBox(height: 3),
+                  SizedBox(height: 3),
                   Text(subtitle!,
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: AppColors.textSecondary, fontSize: 13)),
                 ],
               ],

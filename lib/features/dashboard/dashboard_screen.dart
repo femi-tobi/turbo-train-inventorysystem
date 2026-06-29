@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/providers/dashboard_provider.dart';
 import '../../core/providers/auth_provider.dart';
@@ -37,7 +37,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           actions: [
             IconButton(
               onPressed: () => dash.loadStats(),
-              icon: const Icon(Icons.refresh_rounded,
+              icon: Icon(Icons.refresh_rounded,
                   color: AppColors.textSecondary),
               tooltip: 'Refresh',
             ),
@@ -116,21 +116,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       const SizedBox(height: 32),
 
                       // ── Recent Sales ──
-                      const Text('Recent Transactions',
+                      Text('Recent Transactions',
                           style: TextStyle(
                               color: AppColors.textPrimary,
                               fontSize: 16,
                               fontWeight: FontWeight.w600)),
-                      const SizedBox(height: 14),
+                      SizedBox(height: 14),
 
                       Container(
                         decoration: BoxDecoration(
-                          color: AppColors.card,
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: AppColors.border),
-                        ),
+                            color: AppColors.card,
+                            borderRadius: BorderRadius.circular(12),
+                            border: AppColors.isDark ? Border.all(color: AppColors.border) : null,
+                            boxShadow: AppColors.cardShadow,
+                          ),
                         child: dash.recentSales.isEmpty
-                            ? const Padding(
+                            ? Padding(
                                 padding: EdgeInsets.all(40),
                                 child: Center(
                                   child: Text('No transactions yet',
@@ -150,7 +151,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   },
                                   children: [
                                     TableRow(
-                                      decoration: const BoxDecoration(
+                                      decoration: BoxDecoration(
                                           color: AppColors.surface),
                                       children: ['Date', 'Product', 'Type', 'Amount', 'Profit']
                                           .map((h) => Padding(
@@ -158,7 +159,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                     horizontal: 16,
                                                     vertical: 12),
                                                 child: Text(h,
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         color: AppColors.textSecondary,
                                                         fontSize: 11,
                                                         fontWeight: FontWeight.w600,
@@ -241,7 +242,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         padding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Text(text,
-            style: const TextStyle(
+            style: TextStyle(
                 color: AppColors.textPrimary, fontSize: 13)),
       );
 }

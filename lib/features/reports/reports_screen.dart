@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/database/database_helper.dart';
 import '../../core/providers/product_provider.dart';
@@ -146,8 +146,8 @@ class _ReportsScreenState extends State<ReportsScreen>
           actions: [
             ElevatedButton.icon(
               onPressed: _export,
-              icon: const Icon(Icons.download_rounded, size: 16),
-              label: const Text('Export Excel'),
+              icon: Icon(Icons.download_rounded, size: 16),
+              label: Text('Export Excel'),
             ),
           ],
         ),
@@ -183,7 +183,7 @@ class _ReportsScreenState extends State<ReportsScreen>
               ? const Center(
                   child: CircularProgressIndicator(color: AppColors.accent))
               : _reportData.isEmpty
-                  ? const Center(
+                  ? Center(
                       child: Text('No data for this report',
                           style: TextStyle(color: AppColors.textMuted)))
                   : Scrollbar(
@@ -222,7 +222,7 @@ class _ReportsScreenState extends State<ReportsScreen>
                 child: DropdownButton<String>(
                   value: _filterSaleType,
                   dropdownColor: AppColors.card,
-                  style: const TextStyle(
+                  style: TextStyle(
                       color: AppColors.textPrimary,
                       fontSize: 13,
                       fontFamily: 'Inter'),
@@ -250,15 +250,15 @@ class _ReportsScreenState extends State<ReportsScreen>
                 });
                 _loadReport();
               },
-              icon: const Icon(Icons.clear, size: 14),
-              label: const Text('Clear'),
+              icon: Icon(Icons.clear, size: 14),
+              label: Text('Clear'),
               style: TextButton.styleFrom(
                   foregroundColor: AppColors.textSecondary),
             ),
           ],
           const Spacer(),
           Text('${_reportData.length} rows',
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.textMuted, fontSize: 12)),
         ],
       ),
@@ -302,12 +302,17 @@ class _ReportsScreenState extends State<ReportsScreen>
       initialDate: DateTime.now(),
       firstDate: DateTime(2020),
       lastDate: DateTime(2099),
-      builder: (ctx, child) => Theme(
-        data: Theme.of(ctx).copyWith(
-            colorScheme:
-                const ColorScheme.dark(primary: AppColors.accent)),
-        child: child!,
-      ),
+      builder: (ctx, child) {
+        final isDark = Theme.of(ctx).brightness == Brightness.dark;
+        return Theme(
+          data: Theme.of(ctx).copyWith(
+            colorScheme: isDark
+                ? const ColorScheme.dark(primary: AppColors.accent)
+                : const ColorScheme.light(primary: AppColors.accent),
+          ),
+          child: child!,
+        );
+      },
     );
     if (dt != null) {
       setState(() => isFrom ? _from = dt : _to = dt);
@@ -321,10 +326,11 @@ class _ReportsScreenState extends State<ReportsScreen>
 
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.card,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.border),
-      ),
+                            color: AppColors.card,
+                            borderRadius: BorderRadius.circular(12),
+                            border: AppColors.isDark ? Border.all(color: AppColors.border) : null,
+                            boxShadow: AppColors.cardShadow,
+                          ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: SingleChildScrollView(
@@ -338,7 +344,7 @@ class _ReportsScreenState extends State<ReportsScreen>
             columns: keys.map((k) => DataColumn(
               label: Text(
                 _formatKey(k),
-                style: const TextStyle(
+                style: TextStyle(
                     color: AppColors.textSecondary,
                     fontSize: 11,
                     fontWeight: FontWeight.w600),
@@ -360,7 +366,7 @@ class _ReportsScreenState extends State<ReportsScreen>
                     display = v?.toString() ?? '—';
                   }
                   return DataCell(Text(display,
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: AppColors.textPrimary, fontSize: 12)));
                 }).toList(),
               );

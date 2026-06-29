@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/providers/auth_provider.dart';
 import '../../shared/theme/app_theme.dart';
@@ -102,14 +102,14 @@ class _LoginScreenState extends State<LoginScreen>
                                 color: Colors.black, size: 32),
                           ),
                           const SizedBox(height: 32),
-                          const Text('Lagos Store',
+                          Text('Lagos Store',
                               style: TextStyle(
                                   color: AppColors.textPrimary,
                                   fontSize: 36,
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: -1)),
                           const SizedBox(height: 12),
-                          const Text(
+                          Text(
                             'Inventory Management\nSystem — v1.0',
                             style: TextStyle(
                                 color: AppColors.textSecondary,
@@ -154,14 +154,14 @@ class _LoginScreenState extends State<LoginScreen>
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Welcome back',
+                          Text('Welcome back',
                               style: TextStyle(
                                   color: AppColors.textPrimary,
                                   fontSize: 28,
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: -0.5)),
                           const SizedBox(height: 8),
-                          const Text('Sign in to your account',
+                          Text('Sign in to your account',
                               style: TextStyle(
                                   color: AppColors.textSecondary,
                                   fontSize: 14)),
@@ -199,7 +199,7 @@ class _LoginScreenState extends State<LoginScreen>
                           const SizedBox(height: 8),
 
                           if (auth.error != null) ...[
-                            const SizedBox(height: 8),
+                            SizedBox(height: 8),
                             Container(
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
@@ -240,15 +240,16 @@ class _LoginScreenState extends State<LoginScreen>
                             ),
                           ),
 
-                          const SizedBox(height: 36),
+                          SizedBox(height: 36),
                           Container(
                             padding: const EdgeInsets.all(14),
                             decoration: BoxDecoration(
                               color: AppColors.card,
                               borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: AppColors.border),
+                              border: AppColors.isDark ? Border.all(color: AppColors.border) : null,
+                              boxShadow: AppColors.cardShadow,
                             ),
-                            child: const Column(
+                            child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text('Default credentials',
@@ -292,9 +293,9 @@ class _LoginScreenState extends State<LoginScreen>
             ),
             child: Icon(icon, size: 14, color: AppColors.accent),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: 12),
           Text(text,
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.textSecondary, fontSize: 13)),
         ],
       );
@@ -312,10 +313,10 @@ class _CredRow extends StatelessWidget {
     return Row(
       children: [
         Text('$role: ',
-            style: const TextStyle(
+            style: TextStyle(
                 color: AppColors.textMuted, fontSize: 12)),
         Text('$username / $password',
-            style: const TextStyle(
+            style: TextStyle(
                 color: AppColors.textPrimary,
                 fontSize: 12,
                 fontFamily: 'monospace')),

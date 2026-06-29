@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import '../../core/models/product_model.dart';
@@ -223,7 +223,8 @@ class _SaleFormState extends State<_SaleForm>
                 decoration: BoxDecoration(
                   color: AppColors.card,
                   borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: AppColors.border),
+                  border: AppColors.isDark ? Border.all(color: AppColors.border) : null,
+                  boxShadow: AppColors.cardShadow,
                 ),
                 child: Form(
                   key: _formKey,
@@ -258,7 +259,7 @@ class _SaleFormState extends State<_SaleForm>
                                 _isWholesale
                                     ? 'Wholesale Sale'
                                     : 'Retail Sale',
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600),
                               ),
@@ -266,7 +267,7 @@ class _SaleFormState extends State<_SaleForm>
                                 _isWholesale
                                     ? 'Customer: Wholesale Customer'
                                     : 'Customer: Retail Customer',
-                                style: const TextStyle(
+                                style: TextStyle(
                                     color: AppColors.textSecondary,
                                     fontSize: 12),
                               ),
@@ -275,8 +276,8 @@ class _SaleFormState extends State<_SaleForm>
                         ],
                       ),
 
-                      const SizedBox(height: 24),
-                      const Divider(color: AppColors.border),
+                      SizedBox(height: 24),
+                      Divider(color: AppColors.border),
                       const SizedBox(height: 20),
 
                       // Product dropdown
@@ -330,7 +331,7 @@ class _SaleFormState extends State<_SaleForm>
                       ),
 
                       if (_stockError != null) ...[
-                        const SizedBox(height: 8),
+                        SizedBox(height: 8),
                         Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
@@ -398,15 +399,16 @@ class _SaleFormState extends State<_SaleForm>
                   const Text('Recent Transactions',
                       style: TextStyle(
                           fontSize: 14, fontWeight: FontWeight.w600)),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   Container(
                     decoration: BoxDecoration(
-                      color: AppColors.card,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppColors.border),
-                    ),
+                            color: AppColors.card,
+                            borderRadius: BorderRadius.circular(12),
+                            border: AppColors.isDark ? Border.all(color: AppColors.border) : null,
+                            boxShadow: AppColors.cardShadow,
+                          ),
                     child: recentSales.isEmpty
-                        ? const Padding(
+                        ? Padding(
                             padding: EdgeInsets.all(32),
                             child: Center(
                               child: Text('No transactions yet',
@@ -418,7 +420,7 @@ class _SaleFormState extends State<_SaleForm>
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             itemCount: recentSales.length,
-                            separatorBuilder: (_, __) => const Divider(
+                            separatorBuilder: (_, __) => Divider(
                                 color: AppColors.border, height: 1),
                             itemBuilder: (_, i) {
                               final s = recentSales[i];
@@ -439,7 +441,7 @@ class _SaleFormState extends State<_SaleForm>
                                           Text(
                                               '${formatDate(s.saleDate)}  •  '
                                               '${_isWholesale ? '${formatNumber(s.qtyPacks)} packs' : '${formatNumber(s.qtyPieces)} pcs'}',
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   color:
                                                       AppColors.textSecondary,
                                                   fontSize: 11)),
@@ -511,7 +513,7 @@ class _SaleFormState extends State<_SaleForm>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(label,
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.textMuted, fontSize: 10)),
           Text(value,
               style: TextStyle(
@@ -538,10 +540,10 @@ class _SaleFormState extends State<_SaleForm>
             _sumRow('Unit Price',
                 formatNaira(_unitPrice) +
                     (_isWholesale ? '/pack' : '/piece')),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             _sumRow('COGS', formatNaira(_cogs),
                 color: AppColors.textSecondary),
-            const Divider(color: AppColors.border, height: 20),
+            Divider(color: AppColors.border, height: 20),
             _sumRow('Total Amount', formatNaira(_total),
                 large: true),
             const SizedBox(height: 4),

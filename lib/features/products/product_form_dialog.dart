@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/models/product_model.dart';
 import '../../core/providers/product_provider.dart';
@@ -138,7 +138,7 @@ class _ProductFormDialogState extends State<ProductFormDialog> {
             // Header
             Container(
               padding: const EdgeInsets.fromLTRB(24, 20, 16, 20),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 border: Border(
                     bottom: BorderSide(color: AppColors.border)),
               ),
@@ -316,7 +316,7 @@ class _ProductFormDialogState extends State<ProductFormDialog> {
             // Footer
             Container(
               padding: const EdgeInsets.fromLTRB(24, 16, 24, 16),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 border: Border(top: BorderSide(color: AppColors.border))),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -362,11 +362,11 @@ class _ProductFormDialogState extends State<ProductFormDialog> {
           fillColor: AppColors.background,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: AppColors.border),
+            borderSide: BorderSide(color: AppColors.border),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: AppColors.border),
+            borderSide: BorderSide(color: AppColors.border),
           ),
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 16, vertical: 14),

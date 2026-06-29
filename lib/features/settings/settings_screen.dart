@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +6,7 @@ import '../../core/database/database_helper.dart';
 import '../../core/models/user_model.dart';
 import '../../core/providers/auth_provider.dart';
 import '../../core/providers/dashboard_provider.dart';
+import '../../core/providers/theme_provider.dart';
 import '../../shared/theme/app_theme.dart';
 import '../../shared/utils/formatters.dart';
 import '../../shared/widgets/app_text_field.dart';
@@ -78,7 +79,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('User Management',
@@ -98,14 +99,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ],
                 ),
 
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
 
                 Container(
                   decoration: BoxDecoration(
-                    color: AppColors.card,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: AppColors.border),
-                  ),
+                            color: AppColors.card,
+                            borderRadius: BorderRadius.circular(12),
+                            border: AppColors.isDark ? Border.all(color: AppColors.border) : null,
+                            boxShadow: AppColors.cardShadow,
+                          ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: dash.isLoading
@@ -134,7 +136,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
 
-                const SizedBox(height: 40),
+                SizedBox(height: 40),
 
                 // ── Database Backup ──
                 Container(
@@ -142,7 +144,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   decoration: BoxDecoration(
                     color: AppColors.card,
                     borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: AppColors.border),
+                    border: AppColors.isDark ? Border.all(color: AppColors.border) : null,
+                    boxShadow: AppColors.cardShadow,
                   ),
                   child: Row(
                     children: [
@@ -157,7 +160,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             color: AppColors.info, size: 24),
                       ),
                       const SizedBox(width: 20),
-                      const Expanded(
+                      Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -187,7 +190,72 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
 
-                const SizedBox(height: 24),
+                SizedBox(height: 24),
+
+                // ── Appearance Settings ──
+                Container(
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: AppColors.card,
+                    borderRadius: BorderRadius.circular(14),
+                    border: AppColors.isDark ? Border.all(color: AppColors.border) : null,
+                    boxShadow: AppColors.cardShadow,
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 48,
+                        height: 48,
+                        decoration: BoxDecoration(
+                          color: AppColors.accent.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Icon(
+                          context.watch<ThemeProvider>().isDark
+                              ? Icons.dark_mode_rounded
+                              : Icons.light_mode_rounded,
+                          color: AppColors.accent,
+                          size: 24,
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('Appearance',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600)),
+                            SizedBox(height: 4),
+                            Text(
+                              'Switch between light and dark themes for the application.',
+                              style: TextStyle(
+                                  color: AppColors.textSecondary,
+                                  fontSize: 13,
+                                  height: 1.4),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      Consumer<ThemeProvider>(
+                        builder: (context, themeProvider, _) {
+                          return Switch(
+                            value: !themeProvider.isDark,
+                            onChanged: (_) => themeProvider.toggleTheme(),
+                            activeColor: AppColors.accent,
+                            activeTrackColor: AppColors.accent.withOpacity(0.3),
+                            inactiveThumbColor: AppColors.textSecondary,
+                            inactiveTrackColor: AppColors.border,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: 24),
 
                 // ── App Info ──
                 Container(
@@ -200,7 +268,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Application Info',
+                      Text('Application Info',
                           style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w600,
@@ -224,13 +292,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   TableRow _header() => TableRow(
-        decoration: const BoxDecoration(color: AppColors.surface),
+        decoration: BoxDecoration(color: AppColors.surface),
         children: ['#', 'Username', 'Role', 'Created', 'Actions']
             .map((c) => Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 16, vertical: 12),
                   child: Text(c,
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: AppColors.textSecondary,
                           fontSize: 11,
                           fontWeight: FontWeight.w600,
@@ -273,7 +341,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       style: const TextStyle(
                           fontSize: 13, fontWeight: FontWeight.w600)),
                   if (isSelf)
-                    const Text('(you)',
+                    Text('(you)',
                         style: TextStyle(
                             color: AppColors.textMuted, fontSize: 10)),
                 ],
@@ -306,7 +374,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             children: [
               _iconBtn(Icons.edit_outlined, AppColors.info,
                   () => _showUserForm(context, user: user)),
-              const SizedBox(width: 6),
+              SizedBox(width: 6),
               _iconBtn(
                 Icons.delete_outline,
                 isSelf ? AppColors.textMuted : AppColors.error,
@@ -349,11 +417,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
             SizedBox(
               width: 140,
               child: Text(label,
-                  style: const TextStyle(
+                  style: TextStyle(
                       color: AppColors.textSecondary, fontSize: 13)),
             ),
             Text(value,
-                style: const TextStyle(
+                style: TextStyle(
                     color: AppColors.textPrimary,
                     fontSize: 13,
                     fontWeight: FontWeight.w500)),

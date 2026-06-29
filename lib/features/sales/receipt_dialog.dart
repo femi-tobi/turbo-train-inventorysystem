@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -29,7 +29,7 @@ class ReceiptDialog extends StatelessWidget {
             // Header
             Container(
               padding: const EdgeInsets.fromLTRB(24, 18, 16, 18),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                   border: Border(
                       bottom: BorderSide(color: AppColors.border))),
               child: Row(
@@ -63,18 +63,18 @@ class ReceiptDialog extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             letterSpacing: 2)),
                     const SizedBox(height: 2),
-                    const Text('Inventory Management System',
+                    Text('Inventory Management System',
                         style: TextStyle(
                             color: AppColors.textSecondary,
                             fontSize: 11)),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16),
                     Text('Receipt #${sale.receiptId}',
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: AppColors.textMuted,
                             fontSize: 12,
                             fontFamily: 'monospace')),
-                    const SizedBox(height: 20),
-                    const Divider(color: AppColors.border),
+                    SizedBox(height: 20),
+                    Divider(color: AppColors.border),
                     const SizedBox(height: 16),
 
                     _row('Date', formatDateTime(sale.saleDate)),
@@ -82,8 +82,8 @@ class ReceiptDialog extends StatelessWidget {
                     _row('Customer', sale.customerType),
                     const SizedBox(height: 8),
                     _row('Type', sale.saleTypeLabel),
-                    const SizedBox(height: 16),
-                    const Divider(color: AppColors.border),
+                    SizedBox(height: 16),
+                    Divider(color: AppColors.border),
                     const SizedBox(height: 16),
 
                     // Product details
@@ -105,8 +105,8 @@ class ReceiptDialog extends StatelessWidget {
                         '${formatNaira(sale.unitPrice)} / '
                             '${sale.saleType == "wholesale" ? "pack" : "piece"}'),
 
-                    const SizedBox(height: 16),
-                    const Divider(color: AppColors.border),
+                    SizedBox(height: 16),
+                    Divider(color: AppColors.border),
                     const SizedBox(height: 16),
 
                     // Totals
@@ -126,24 +126,24 @@ class ReceiptDialog extends StatelessWidget {
                         mainAxisAlignment:
                             MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('TOTAL PAID',
+                          Text('TOTAL PAID',
                               style: TextStyle(
                                   color: AppColors.textSecondary,
                                   fontSize: 13,
                                   fontWeight: FontWeight.w700,
                                   letterSpacing: 1)),
                           Text(formatNaira(sale.totalAmount),
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.accent,
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold)),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 16),
-                    const Divider(color: AppColors.border),
-                    const SizedBox(height: 8),
-                    const Text('Thank you for your business!',
+                    SizedBox(height: 16),
+                    Divider(color: AppColors.border),
+                    SizedBox(height: 8),
+                    Text('Thank you for your business!',
                         style: TextStyle(
                             color: AppColors.textMuted, fontSize: 12)),
                   ],
@@ -154,7 +154,7 @@ class ReceiptDialog extends StatelessWidget {
             // Print button
             Container(
               padding: const EdgeInsets.all(16),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                   border:
                       Border(top: BorderSide(color: AppColors.border))),
               child: Row(
@@ -187,7 +187,7 @@ class ReceiptDialog extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label,
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.textSecondary, fontSize: 13)),
           Text(value,
               style: TextStyle(

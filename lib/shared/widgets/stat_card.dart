@@ -36,7 +36,10 @@ class StatCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: AppColors.card,
                   borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: AppColors.border),
+                  border: AppColors.isDark
+                      ? Border.all(color: AppColors.border)
+                      : null,
+                  boxShadow: AppColors.cardShadow,
                 ),
                 padding: const EdgeInsets.fromLTRB(23, 14, 16, 14),
                 child: Column(
@@ -59,7 +62,7 @@ class StatCard extends StatelessWidget {
                               size: 12, color: AppColors.textMuted),
                       ],
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10),
                     Text(
                       value,
                       style: TextStyle(
@@ -71,10 +74,10 @@ class StatCard extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 2),
+                    SizedBox(height: 2),
                     Text(
                       label,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: AppColors.textSecondary,
                         fontSize: 11,
                         fontWeight: FontWeight.w500,
@@ -83,10 +86,10 @@ class StatCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     if (subtitle != null) ...[
-                      const SizedBox(height: 2),
+                      SizedBox(height: 2),
                       Text(
                         subtitle!,
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: AppColors.textMuted, fontSize: 10),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
