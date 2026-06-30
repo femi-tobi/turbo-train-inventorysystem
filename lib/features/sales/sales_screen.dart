@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import '../../core/models/product_model.dart';
@@ -97,17 +97,13 @@ class _SaleFormState extends State<_SaleForm>
   final _formKey = GlobalKey<FormState>();
   ProductModel? _product;
   final _qty = TextEditingController();
+  final _priceController = TextEditingController();
   bool _saving = false;
   String? _stockError;
 
   bool get _isWholesale => widget.type == 'wholesale';
 
-  double get _unitPrice {
-    if (_product == null) return 0;
-    return _isWholesale
-        ? _product!.wholesalePricePerPack
-        : _product!.retailPricePerPiece;
-  }
+  double get _unitPrice => double.tryParse(_priceController.text) ?? 0;
 
   double get _qty2 => double.tryParse(_qty.text) ?? 0;
 
@@ -174,10 +170,13 @@ class _SaleFormState extends State<_SaleForm>
         context.read<ProductProvider>().loadProducts();
         context.read<DashboardProvider>().loadStats();
 
+        // Capture product before resetting state
+        final currentProduct = _product!;
+
         // Show receipt
         showDialog(
           context: context,
-          builder: (_) => ReceiptDialog(sale: created, product: _product!),
+          builder: (_) => ReceiptDialog(sale: created, product: currentProduct),
         );
 
         // Reset form
@@ -296,6 +295,12 @@ class _SaleFormState extends State<_SaleForm>
                           setState(() {
                             _product = products.firstWhere((p) => p.id == v);
                             _qty.clear();
+                            final price = _isWholesale
+                                ? _product!.wholesalePricePerPack
+                                : _product!.retailPricePerPiece;
+                            _priceController.text = price == price.toInt() 
+                                ? price.toInt().toString() 
+                                : price.toString();
                             _stockError = null;
                           });
                         },
@@ -310,24 +315,47 @@ class _SaleFormState extends State<_SaleForm>
 
                       const SizedBox(height: 16),
 
-                      // Quantity field
-                      AppTextField(
-                        controller: _qty,
-                        label: _isWholesale
-                            ? 'Quantity (Packs) *'
-                            : 'Quantity (Pieces) *',
-                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                        onChanged: (_) {
-                          setState(() {});
-                          _validateStock();
-                        },
-                        validator: (v) {
-                          if (v == null || v.isEmpty) return 'Required';
-                          if ((double.tryParse(v) ?? 0) <= 0) {
-                            return 'Quantity must be > 0';
-                          }
-                          return null;
-                        },
+                      // Quantity & Price fields
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: AppTextField(
+                              controller: _qty,
+                              label: _isWholesale
+                                  ? 'Quantity (Packs) *'
+                                  : 'Quantity (Pieces) *',
+                              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                              onChanged: (_) {
+                                setState(() {});
+                                _validateStock();
+                              },
+                              validator: (v) {
+                                if (v == null || v.isEmpty) return 'Required';
+                                if ((double.tryParse(v) ?? 0) <= 0) {
+                                  return 'Quantity must be > 0';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: AppTextField(
+                              controller: _priceController,
+                              label: 'Unit Price *',
+                              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                              onChanged: (_) => setState(() {}),
+                              validator: (v) {
+                                if (v == null || v.isEmpty) return 'Required';
+                                if ((double.tryParse(v) ?? 0) <= 0) {
+                                  return 'Must be > 0';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ],
                       ),
 
                       if (_stockError != null) ...[

@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -7,7 +7,7 @@ import '../../core/models/sale_model.dart';
 import '../../shared/theme/app_theme.dart';
 import '../../shared/utils/formatters.dart';
 
-class ReceiptDialog extends StatelessWidget {
+class ReceiptDialog extends StatefulWidget {
   final SaleModel sale;
   final ProductModel product;
 
@@ -16,6 +16,19 @@ class ReceiptDialog extends StatelessWidget {
     required this.sale,
     required this.product,
   });
+
+  @override
+  State<ReceiptDialog> createState() => _ReceiptDialogState();
+}
+
+class _ReceiptDialogState extends State<ReceiptDialog> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +63,11 @@ class ReceiptDialog extends StatelessWidget {
 
             // Receipt body
             Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(24),
+              child: Scrollbar(
+                controller: _scrollController,
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  padding: const EdgeInsets.all(24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -68,7 +84,7 @@ class ReceiptDialog extends StatelessWidget {
                             color: AppColors.textSecondary,
                             fontSize: 11)),
                     SizedBox(height: 16),
-                    Text('Receipt #${sale.receiptId}',
+                    Text('Receipt #${widget.sale.receiptId}',
                         style: TextStyle(
                             color: AppColors.textMuted,
                             fontSize: 12,
@@ -77,33 +93,33 @@ class ReceiptDialog extends StatelessWidget {
                     Divider(color: AppColors.border),
                     const SizedBox(height: 16),
 
-                    _row('Date', formatDateTime(sale.saleDate)),
+                    _row('Date', formatDateTime(widget.sale.saleDate)),
                     const SizedBox(height: 8),
-                    _row('Customer', sale.customerType),
+                    _row('Customer', widget.sale.customerType),
                     const SizedBox(height: 8),
-                    _row('Type', sale.saleTypeLabel),
+                    _row('Type', widget.sale.saleTypeLabel),
                     SizedBox(height: 16),
                     Divider(color: AppColors.border),
                     const SizedBox(height: 16),
 
                     // Product details
-                    _row('Product', sale.productName ?? product.name),
+                    _row('Product', widget.sale.productName ?? widget.product.name),
                     const SizedBox(height: 8),
-                    _row('Code', product.code),
+                    _row('Code', widget.product.code),
                     const SizedBox(height: 8),
-                    _row('Brand', product.brand),
+                    _row('Brand', widget.product.brand),
                     const SizedBox(height: 8),
-                    if (sale.saleType == 'wholesale')
+                    if (widget.sale.saleType == 'wholesale')
                       _row('Quantity',
-                          '${formatNumber(sale.qtyPacks)} Packs')
+                          '${formatNumber(widget.sale.qtyPacks)} Packs')
                     else
                       _row('Quantity',
-                          '${formatNumber(sale.qtyPieces)} Pieces'),
+                          '${formatNumber(widget.sale.qtyPieces)} Pieces'),
                     const SizedBox(height: 8),
                     _row(
                         'Unit Price',
-                        '${formatNaira(sale.unitPrice)} / '
-                            '${sale.saleType == "wholesale" ? "pack" : "piece"}'),
+                        '${formatNaira(widget.sale.unitPrice)} / '
+                            '${widget.sale.saleType == "wholesale" ? "pack" : "piece"}'),
 
                     SizedBox(height: 16),
                     Divider(color: AppColors.border),
@@ -111,7 +127,7 @@ class ReceiptDialog extends StatelessWidget {
 
                     // Totals
                     _row('Sub-total',
-                        formatNaira(sale.totalAmount),
+                        formatNaira(widget.sale.totalAmount),
                         bold: true),
                     const SizedBox(height: 8),
                     Container(
@@ -132,7 +148,7 @@ class ReceiptDialog extends StatelessWidget {
                                   fontSize: 13,
                                   fontWeight: FontWeight.w700,
                                   letterSpacing: 1)),
-                          Text(formatNaira(sale.totalAmount),
+                          Text(formatNaira(widget.sale.totalAmount),
                               style: TextStyle(
                                   color: AppColors.accent,
                                   fontSize: 22,
@@ -150,6 +166,7 @@ class ReceiptDialog extends StatelessWidget {
                 ),
               ),
             ),
+          ),
 
             // Print button
             Container(
@@ -200,7 +217,7 @@ class ReceiptDialog extends StatelessWidget {
 
   Future<void> _printReceipt(BuildContext context) async {
     final doc = pw.Document();
-    final isWholesale = sale.saleType == 'wholesale';
+    final isWholesale = widget.sale.saleType == 'wholesale';
 
     doc.addPage(
       pw.Page(
@@ -219,27 +236,27 @@ class ReceiptDialog extends StatelessWidget {
               pw.Text('Sales Receipt',
                   style: const pw.TextStyle(fontSize: 12)),
               pw.SizedBox(height: 4),
-              pw.Text('Receipt #${sale.receiptId}',
+              pw.Text('Receipt #${widget.sale.receiptId}',
                   style: const pw.TextStyle(fontSize: 10)),
               pw.Divider(),
               pw.SizedBox(height: 8),
-              _pdfRow('Date', formatDateTime(sale.saleDate)),
-              _pdfRow('Customer', sale.customerType),
-              _pdfRow('Type', sale.saleTypeLabel),
+              _pdfRow('Date', formatDateTime(widget.sale.saleDate)),
+              _pdfRow('Customer', widget.sale.customerType),
+              _pdfRow('Type', widget.sale.saleTypeLabel),
               pw.SizedBox(height: 8),
               pw.Divider(),
               pw.SizedBox(height: 8),
-              _pdfRow('Product', sale.productName ?? product.name),
-              _pdfRow('Code', product.code),
-              _pdfRow('Brand', product.brand),
+              _pdfRow('Product', widget.sale.productName ?? widget.product.name),
+              _pdfRow('Code', widget.product.code),
+              _pdfRow('Brand', widget.product.brand),
               _pdfRow(
                   'Quantity',
                   isWholesale
-                      ? '${formatNumber(sale.qtyPacks)} Packs'
-                      : '${formatNumber(sale.qtyPieces)} Pieces'),
+                      ? '${formatNumber(widget.sale.qtyPacks)} Packs'
+                      : '${formatNumber(widget.sale.qtyPieces)} Pieces'),
               _pdfRow(
                   'Unit Price',
-                  'NGN ${formatNaira(sale.unitPrice).replaceAll('₦', '')} / '
+                  'NGN ${formatNaira(widget.sale.unitPrice).replaceAll('₦', '')} / '
                       '${isWholesale ? "pack" : "piece"}'),
               pw.SizedBox(height: 8),
               pw.Divider(),
@@ -251,7 +268,7 @@ class ReceiptDialog extends StatelessWidget {
                       style: pw.TextStyle(
                           fontWeight: pw.FontWeight.bold, fontSize: 14)),
                   pw.Text(
-                      'NGN ${formatNaira(sale.totalAmount).replaceAll("₦", "")}',
+                      'NGN ${formatNaira(widget.sale.totalAmount).replaceAll("₦", "")}',
                       style: pw.TextStyle(
                           fontWeight: pw.FontWeight.bold, fontSize: 18)),
                 ],
@@ -267,7 +284,7 @@ class ReceiptDialog extends StatelessWidget {
 
     await Printing.layoutPdf(
       onLayout: (_) => doc.save(),
-      name: 'Receipt_${sale.receiptId}',
+      name: 'Receipt_${widget.sale.receiptId}',
     );
   }
 
